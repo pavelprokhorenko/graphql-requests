@@ -40,4 +40,4 @@ class GraphQLClient(GraphQLBaseClient):
         if errors := response_data.get("errors"):
             raise GraphQLError(errors=errors)
 
-        return response_data
+        return response_data["data"]
