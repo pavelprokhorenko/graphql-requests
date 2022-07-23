@@ -3,6 +3,7 @@ from typing import Any
 import requests
 
 from graphql_client.client.base import GraphQLBaseClient
+from graphql_client.errors import GraphQLError
 
 
 class GraphQLClient(GraphQLBaseClient):
@@ -13,7 +14,7 @@ class GraphQLClient(GraphQLBaseClient):
         operation_name: str,
         variables: str | dict[str, Any],
         headers: dict[str, Any] | None = None,
-        cookies: dict[str, Any] | None = None
+        cookies: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Send request to outer Graphql service and return received data."""
         if headers is None:
@@ -34,5 +35,9 @@ class GraphQLClient(GraphQLBaseClient):
             cookies=cookies,
             timeout=self._timeout,
         )
+        response_data = response.json()
 
-        return response.json()
+        if errors := response_data.get("errors"):
+            raise GraphQLError(errors=errors)
+
+        return response_data
