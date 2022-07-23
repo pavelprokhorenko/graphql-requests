@@ -1,7 +1,7 @@
 import json
-from typing import Any, Optional
+from typing import Any
 
-from ..typedefs import JSONEncoder
+from graphql_client.typedefs import JSONEncoder
 
 
 class GraphQLBaseClient:
@@ -18,10 +18,10 @@ class GraphQLBaseClient:
         self,
         url: str,
         *,
-        headers: Optional[dict[str, Any]] = None,
-        cookies: Optional[dict[str, Any]] = None,
-        json_serialize: Optional[JSONEncoder] = json.dumps,
-        timeout: Optional[float] = 60  # seconds
+        headers: dict[str, Any] | None = None,
+        cookies: dict[str, Any] | None = None,
+        json_serialize: JSONEncoder | None = json.dumps,
+        timeout: float | None = 15  # seconds
     ) -> None:
         if headers is None:
             headers = dict()
@@ -32,6 +32,17 @@ class GraphQLBaseClient:
         self._cookies = cookies
         self._json_serialize = json_serialize
         self._timeout = timeout
+
+    def _build_send_data(
+        self, query: str, operation_name: str, variables: str | dict[str, Any]
+    ) -> str:
+        """Serialize request payload to ``str``."""
+        data = {
+            "query": query,
+            "operation_name": operation_name,
+            "variables": variables,
+        }
+        return self._json_serialize(data, default=str)
 
     @property
     def headers(self) -> dict[str, Any]:
