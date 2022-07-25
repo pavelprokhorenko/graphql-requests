@@ -2,8 +2,8 @@ from typing import Any
 
 import requests
 
-from graphql_client.client.base import GraphQLBaseClient
-from graphql_client.errors import GraphQLError
+from graphql_requests.client.base import GraphQLBaseClient
+from graphql_requests.errors import GraphQLError
 
 
 class GraphQLClient(GraphQLBaseClient):

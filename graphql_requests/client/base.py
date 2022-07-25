@@ -1,7 +1,7 @@
 import json
 from typing import Any
 
-from graphql_client.typedefs import JSONEncoder
+from graphql_requests.typedefs import JSONEncoder
 
 
 class GraphQLBaseClient:

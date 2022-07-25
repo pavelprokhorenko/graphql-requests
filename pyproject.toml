@@ -3,8 +3,8 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit.buildapi"
 
 [tool.flit.metadata]
-module = "graphql_client"
-dist-name = "graphql_client"
+module = "graphql_requests"
+dist-name = "graphql-requests"
 author = "Prokhorenko Pavel"
 author-email = "prohorenkopavel74@gmail.com"
 home-page = "https://github.com/pavelprokhorenko/graphql-client"
