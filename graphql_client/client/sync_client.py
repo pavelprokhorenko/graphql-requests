@@ -7,12 +7,14 @@ from graphql_client.errors import GraphQLError
 
 
 class GraphQLClient(GraphQLBaseClient):
+    """Synchronous GraphQL client"""
+
     def send(
         self,
         *,
         query: str,
-        operation_name: str,
-        variables: str | dict[str, Any],
+        operation_name: str = None,
+        variables: str | dict[str, Any] = None,
         headers: dict[str, Any] | None = None,
         cookies: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
@@ -21,8 +23,8 @@ class GraphQLClient(GraphQLBaseClient):
             headers = dict()
         if cookies is None:
             cookies = dict()
-        headers.update(self._headers)
-        cookies.update(self._cookies)
+        headers.update(self._headers or {})
+        cookies.update(self._cookies or {})
 
         request_data = self._build_send_data(
             query=query, operation_name=operation_name, variables=variables
