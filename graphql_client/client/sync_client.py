@@ -11,6 +11,7 @@ class GraphQLClient(GraphQLBaseClient):
 
     def send(
         self,
+        url: str | None = None,
         *,
         query: str,
         operation_name: str = None,
@@ -26,12 +27,15 @@ class GraphQLClient(GraphQLBaseClient):
         headers.update(self._headers or {})
         cookies.update(self._cookies or {})
 
+        if url is not None:
+            url = self._base_url.rstrip("/") + "/" + url.lstrip("/")
+
         request_data = self._build_send_data(
             query=query, operation_name=operation_name, variables=variables
         )
 
         response = requests.post(
-            self._url,
+            url,
             data=request_data,
             headers=headers,
             cookies=cookies,
