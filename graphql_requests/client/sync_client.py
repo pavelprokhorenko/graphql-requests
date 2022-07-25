@@ -2,17 +2,20 @@ from typing import Any
 
 import requests
 
-from graphql_client.client.base import GraphQLBaseClient
-from graphql_client.errors import GraphQLError
+from graphql_requests.client.base import GraphQLBaseClient
+from graphql_requests.errors import GraphQLError
 
 
 class GraphQLClient(GraphQLBaseClient):
+    """Synchronous GraphQL client"""
+
     def send(
         self,
+        url: str | None = None,
         *,
         query: str,
-        operation_name: str,
-        variables: str | dict[str, Any],
+        operation_name: str = None,
+        variables: str | dict[str, Any] = None,
         headers: dict[str, Any] | None = None,
         cookies: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
@@ -21,15 +24,18 @@ class GraphQLClient(GraphQLBaseClient):
             headers = dict()
         if cookies is None:
             cookies = dict()
-        headers.update(self._headers)
-        cookies.update(self._cookies)
+        headers.update(self._headers or {})
+        cookies.update(self._cookies or {})
+
+        if url is not None:
+            url = self._base_url.rstrip("/") + "/" + url.lstrip("/")
 
         request_data = self._build_send_data(
             query=query, operation_name=operation_name, variables=variables
         )
 
         response = requests.post(
-            self._url,
+            url,
             data=request_data,
             headers=headers,
             cookies=cookies,

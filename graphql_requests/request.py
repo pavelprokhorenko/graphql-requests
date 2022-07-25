@@ -1,7 +1,7 @@
 import re
 from typing import Any
 
-from graphql_client.utils import (
+from graphql_requests.utils import (
     dict_keys_to_camel_case_recursively,
     read_scheme_from_file,
 )

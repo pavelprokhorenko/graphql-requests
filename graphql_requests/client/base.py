@@ -1,13 +1,13 @@
 import json
 from typing import Any
 
-from graphql_client.typedefs import JSONEncoder
+from graphql_requests.typedefs import JSONEncoder
 
 
 class GraphQLBaseClient:
 
     __slots__ = [
-        "_url",
+        "_base_url",
         "_headers",
         "_cookies",
         "_json_serialize",
@@ -16,7 +16,7 @@ class GraphQLBaseClient:
 
     def __init__(
         self,
-        url: str,
+        base_url: str,
         *,
         headers: dict[str, Any] | None = None,
         cookies: dict[str, Any] | None = None,
@@ -27,7 +27,7 @@ class GraphQLBaseClient:
             headers = dict()
         headers["Content-Type"] = "application/json"
 
-        self._url = url
+        self._base_url = base_url
         self._headers = headers
         self._cookies = cookies
         self._json_serialize = json_serialize
