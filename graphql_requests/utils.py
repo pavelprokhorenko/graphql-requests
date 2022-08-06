@@ -1,5 +1,8 @@
 from os import path
 from re import compile
+from typing import Any, Dict
+
+from graphql_requests.typedefs import SnakeCaseEncoder
 
 SNAKE_CASE_PATTERN = compile(r"(?<!^)(?=[A-Z])")
 SELECT_ABBREVIATIONS_PATTERN = compile(r"(.)([A-Z][a-z]+)")
@@ -29,6 +32,21 @@ def to_snake_case_safe(camel_str: str) -> str:
     return SEPARATE_WORD_FORM_ABBREVIATIONS_PATTERN.sub(r"\1_\2", camel_str).lower()
 
 
+def dict_keys_to_snake_case_recursively(
+    d: Dict[str, Any], snake_case_serializer: SnakeCaseEncoder = to_snake_case
+) -> Dict[str, Any]:
+    """
+    Convert dictionary key names from `camelCase` to `snake_case`.
+    Use `to_snake_case_safe` instead of usual `to_snake_case` if you have complex naming case.
+    """
+    return {
+        snake_case_serializer(key): dict_keys_to_snake_case_recursively(value)
+        if isinstance(value, dict)
+        else value
+        for key, value in d.items()
+    }
+
+
 def to_camel_case(snake_str: str) -> str:
     """
     Convert string from `snake_case` to `camelCase`
@@ -37,7 +55,7 @@ def to_camel_case(snake_str: str) -> str:
     return components[0] + "".join(x.title() for x in components[1:])
 
 
-def dict_keys_to_camel_case_recursively(d: dict) -> dict:
+def dict_keys_to_camel_case_recursively(d: Dict[str, Any]) -> Dict[str, Any]:
     """
     Convert dictionary key names from `snake_case` to `camelCase`
     """
