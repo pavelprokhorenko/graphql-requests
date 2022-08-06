@@ -1,5 +1,5 @@
 import json
-from typing import Any
+from typing import Any, Dict, Union
 
 from graphql_requests.typedefs import JSONEncoder
 
@@ -18,10 +18,10 @@ class GraphQLBaseClient:
         self,
         base_url: str,
         *,
-        headers: dict[str, Any] | None = None,
-        cookies: dict[str, Any] | None = None,
-        json_serialize: JSONEncoder | None = json.dumps,
-        timeout: float | None = 15  # seconds
+        headers: Union[Dict[str, Any], None] = None,
+        cookies: Union[Dict[str, Any], None] = None,
+        json_serialize: Union[JSONEncoder, None] = json.dumps,
+        timeout: Union[float, None] = 15  # seconds
     ) -> None:
         if headers is None:
             headers = dict()
@@ -34,7 +34,7 @@ class GraphQLBaseClient:
         self._timeout = timeout
 
     def _build_send_data(
-        self, query: str, operation_name: str, variables: str | dict[str, Any]
+        self, query: str, operation_name: str, variables: Union[str, Dict[str, Any]]
     ) -> str:
         """Serialize request payload to ``str``."""
         data = {
@@ -45,12 +45,12 @@ class GraphQLBaseClient:
         return self._json_serialize(data, default=str)
 
     @property
-    def headers(self) -> dict[str, Any]:
+    def headers(self) -> Dict[str, Any]:
         """The default headers of the client session."""
         return self._headers
 
     @property
-    def cookies(self) -> dict[str, Any]:
+    def cookies(self) -> Dict[str, Any]:
         """The session cookies."""
         return self._cookies
 
