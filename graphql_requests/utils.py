@@ -1,7 +1,9 @@
 from os import path
-from re import compile, sub
+from re import compile
 
 SNAKE_CASE_PATTERN = compile(r"(?<!^)(?=[A-Z])")
+SELECT_ABBREVIATIONS_PATTERN = compile(r"(.)([A-Z][a-z]+)")
+SEPARATE_WORD_FORM_ABBREVIATIONS_PATTERN = compile(r"([a-z0-9])([A-Z])")
 
 
 def to_snake_case(camel_str: str) -> str:
@@ -11,20 +13,20 @@ def to_snake_case(camel_str: str) -> str:
     Warning! String "getHTTPResponse" after processing will look like "get_h_t_t_p_response".
     For more complex cases (like above with multiple consecutive capital letters) use `to_snake_case_save` function.
     """
-    return SNAKE_CASE_PATTERN.sub("_", camel_str).lower()
+    return SNAKE_CASE_PATTERN.sub(r"_", camel_str).lower()
 
 
 def to_snake_case_safe(camel_str: str) -> str:
     """
     Convert string from `camelCase` to `snake_case`
     with saving abbreviation (or any string with multiple consecutive capital letters).
-
-    Warning! This conversion is not reversible anymore.
-    You cannot get "getHTTPResponse" from "get_http_response".
     This operation take more time than usual `to_snake_case`. If your case is not so complex, use `to_snake_case`.
+
+    Warning! Conversion is not reversible anymore.
+    You cannot get "getHTTPResponse" from "get_http_response".
     """
-    camel_str = sub("(.)([A-Z][a-z]+)", r"\1_\2", camel_str)
-    return sub("([a-z0-9])([A-Z])", r"\1_\2", camel_str).lower()
+    camel_str = SELECT_ABBREVIATIONS_PATTERN.sub(r"\1_\2", camel_str)
+    return SEPARATE_WORD_FORM_ABBREVIATIONS_PATTERN.sub(r"\1_\2", camel_str).lower()
 
 
 def to_camel_case(snake_str: str) -> str:
