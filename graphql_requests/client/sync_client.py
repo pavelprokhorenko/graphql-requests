@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict, Union
 
 import requests
 
@@ -13,14 +13,14 @@ class GraphQLClient(GraphQLBaseClient):
 
     def send(
         self,
-        url: str | None = None,
+        url: Union[str, None] = None,
         *,
         query: str,
         operation_name: str = None,
-        variables: str | dict[str, Any] = None,
-        headers: dict[str, Any] | None = None,
-        cookies: dict[str, Any] | None = None,
-    ) -> dict[str, Any]:
+        variables: Union[str, Dict[str, Any]] = None,
+        headers: Union[Dict[str, Any], None] = None,
+        cookies: Union[Dict[str, Any], None] = None,
+    ) -> Dict[str, Any]:
         """
         Send request to outer Graphql service and return received data
         """
@@ -49,7 +49,8 @@ class GraphQLClient(GraphQLBaseClient):
         )
         response_data = response.json()
 
-        if errors := response_data.get("errors"):
+        errors = response_data.get("errors")
+        if errors:
             raise GraphQLError(errors=errors)
 
         return response_data["data"]

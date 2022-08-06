@@ -1,5 +1,5 @@
 import re
-from typing import Any
+from typing import Any, Dict
 
 from graphql_requests.utils import (
     dict_keys_to_camel_case_recursively,
@@ -8,21 +8,21 @@ from graphql_requests.utils import (
 
 
 class GraphQLRequest:
-    def __init__(self, *, body: str, variables: dict[str, Any]) -> None:
+    def __init__(self, *, body: str, variables: Dict[str, Any]) -> None:
         """
         Build request send data for outer GraphQL service
         """
         self._body = body
         self._variables = dict_keys_to_camel_case_recursively(variables)
 
-    def set_variables(self, variables: dict[str, Any]) -> None:
+    def set_variables(self, variables: Dict[str, Any]) -> None:
         """
         Override variables to send
         """
         camel_case_variables = dict_keys_to_camel_case_recursively(variables)
         self._variables = camel_case_variables
 
-    def extend_variables(self, additional_variables: dict[str, Any]) -> None:
+    def extend_variables(self, additional_variables: Dict[str, Any]) -> None:
         """
         Add new variables to existing ones
         """
@@ -50,7 +50,7 @@ class GraphQLRequest:
         return self._body
 
     @property
-    def variables(self) -> dict[str, Any]:
+    def variables(self) -> Dict[str, Any]:
         """
         Request payload
         """
