@@ -7,7 +7,9 @@ from graphql_requests.errors import GraphQLError
 
 
 class GraphQLClient(GraphQLBaseClient):
-    """Synchronous GraphQL client"""
+    """
+    Synchronous GraphQL client
+    """
 
     def send(
         self,
@@ -19,7 +21,9 @@ class GraphQLClient(GraphQLBaseClient):
         headers: dict[str, Any] | None = None,
         cookies: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """Send request to outer Graphql service and return received data."""
+        """
+        Send request to outer Graphql service and return received data
+        """
         if headers is None:
             headers = dict()
         if cookies is None:
@@ -29,6 +33,8 @@ class GraphQLClient(GraphQLBaseClient):
 
         if url is not None:
             url = self._base_url.rstrip("/") + "/" + url.lstrip("/")
+        else:
+            url = self._base_url
 
         request_data = self._build_send_data(
             query=query, operation_name=operation_name, variables=variables
