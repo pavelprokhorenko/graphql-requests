@@ -49,7 +49,8 @@ class GraphQLClient(GraphQLBaseClient):
         )
         response_data = response.json()
 
-        if errors := response_data.get("errors"):
+        errors = response_data.get("errors")
+        if errors:
             raise GraphQLError(errors=errors)
 
         return response_data["data"]
