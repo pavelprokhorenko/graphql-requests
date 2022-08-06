@@ -33,19 +33,10 @@ repos:
     rev: 5.10.1
     hooks:
       - id: isort
-        name: isort (python)
         args:
           - --line-length=88
-      - id: isort
-        name: isort (cython)
-        types: [ cython ]
-        args:
-          - --line-length=88
-      - id: isort
-        name: isort (pyi)
-        types: [ pyi ]
-        args:
-          - --line-length=88
+          - --profile
+          - black
   - repo: https://github.com/psf/black
     rev: 22.6.0
     hooks:
