@@ -9,7 +9,7 @@ from graphql_requests.utils import dict_keys_to_snake_case_recursively
 
 class GraphQLClient(GraphQLBaseClient):
     """
-    Synchronous GraphQL client
+    Synchronous GraphQL request client.
     """
 
     def send(

@@ -9,3 +9,9 @@ class GraphQLError(Exception):
             error.get("message") or "\n".join(error.get("messages")) for error in errors
         )
         super().__init__(message)
+
+
+class ClientAlreadyConnected(Exception):
+    """
+    Client tries to reconnect to a new session when the old session is not closed.
+    """

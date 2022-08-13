@@ -6,6 +6,9 @@ from graphql_requests.utils import to_snake_case
 
 
 class GraphQLBaseClient:
+    """
+    Base GraphQL request client.
+    """
 
     __slots__ = [
         "_base_url",
@@ -26,7 +29,7 @@ class GraphQLBaseClient:
         json_serialize: Union[JSONEncoder, None] = json.dumps,
         snake_case_serializer: Union[SnakeCaseEncoder, None] = to_snake_case,
         auto_snake_case: Union[bool, None] = True,
-        timeout: Union[float, None] = 15,  # seconds
+        timeout: Union[float, None] = None,  # seconds
     ) -> None:
         if headers is None:
             headers = dict()
@@ -79,6 +82,6 @@ class GraphQLBaseClient:
         return self._auto_snake_case
 
     @property
-    def timeout(self) -> float:
+    def timeout(self) -> Union[float, None]:
         """Timeout for the session."""
         return self._timeout

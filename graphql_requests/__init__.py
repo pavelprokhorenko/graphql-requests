@@ -2,5 +2,6 @@
 
 __version__ = "0.2.0"
 
+from .client import GraphQLAsyncClient as GraphQLAsyncClient
 from .client import GraphQLClient as GraphQLClient
 from .request import GraphQLRequest as GraphQLRequest
