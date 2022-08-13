@@ -4,20 +4,20 @@ from typing import Any, Dict, Optional, Type, Union
 
 from aiohttp import ClientResponse, ClientSession, ClientTimeout
 
-from graphql_requests.client.base import GraphQLBaseClient
+from graphql_requests.client.base import BaseClient
 from graphql_requests.errors import ClientAlreadyConnected, GraphQLError
 from graphql_requests.typedefs import JSONEncoder, SnakeCaseEncoder
 from graphql_requests.utils import dict_keys_to_snake_case_recursively, to_snake_case
 
 
-class GraphQLAsyncClient(GraphQLBaseClient):
+class AsyncClient(BaseClient):
     """
     Asynchronous GraphQL request client.
     """
 
     def __init__(
         self,
-        base_url: str,
+        base_url: Union[str, None] = None,
         *,
         headers: Union[Dict[str, Any], None] = None,
         cookies: Union[Dict[str, Any], None] = None,
@@ -138,7 +138,7 @@ class GraphQLAsyncClient(GraphQLBaseClient):
         # __exit__ should exist in pair with __enter__ but never executed
         pass
 
-    async def __aenter__(self) -> "GraphQLAsyncClient":
+    async def __aenter__(self) -> "AsyncClient":
         await self.connect()
         return self
 

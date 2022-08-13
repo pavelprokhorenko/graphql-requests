@@ -2,12 +2,12 @@ from typing import Any, Dict, Union
 
 import requests
 
-from graphql_requests.client.base import GraphQLBaseClient
+from graphql_requests.client.base import BaseClient
 from graphql_requests.errors import GraphQLError
 from graphql_requests.utils import dict_keys_to_snake_case_recursively
 
 
-class GraphQLClient(GraphQLBaseClient):
+class Client(BaseClient):
     """
     Synchronous GraphQL request client.
     """

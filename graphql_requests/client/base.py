@@ -5,7 +5,7 @@ from graphql_requests.typedefs import JSONEncoder, SnakeCaseEncoder
 from graphql_requests.utils import to_snake_case
 
 
-class GraphQLBaseClient:
+class BaseClient:
     """
     Base GraphQL request client.
     """
@@ -22,7 +22,7 @@ class GraphQLBaseClient:
 
     def __init__(
         self,
-        base_url: str,
+        base_url: Union[str, None] = None,
         *,
         headers: Union[Dict[str, Any], None] = None,
         cookies: Union[Dict[str, Any], None] = None,
