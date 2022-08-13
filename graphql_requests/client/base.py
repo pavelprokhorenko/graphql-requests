@@ -24,6 +24,7 @@ class GraphQLBaseClient:
         cookies: Union[Dict[str, Any], None] = None,
         json_serialize: Union[JSONEncoder, None] = json.dumps,
         snake_case_serializer: Union[SnakeCaseEncoder, None] = to_snake_case,
+        auto_snake_case: Union[bool, None] = True,
         timeout: Union[float, None] = 15,  # seconds
     ) -> None:
         if headers is None:
@@ -37,6 +38,7 @@ class GraphQLBaseClient:
         self._cookies: Dict[str, Any] = cookies
         self._json_serialize: JSONEncoder = json_serialize
         self._snake_case_serializer: SnakeCaseEncoder = snake_case_serializer
+        self._auto_snake_case: bool = auto_snake_case
         self._timeout: float = timeout
 
     def _build_send_data(
@@ -69,6 +71,11 @@ class GraphQLBaseClient:
     def snake_case_serializer(self) -> SnakeCaseEncoder:
         """Snake case serializer callable."""
         return self._snake_case_serializer
+
+    @property
+    def auto_snake_case(self) -> bool:
+        """Is response data will be automatically converted to `snake_case`."""
+        return self._auto_snake_case
 
     @property
     def timeout(self) -> float:
