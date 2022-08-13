@@ -5,7 +5,10 @@ from graphql_requests.typedefs import JSONEncoder, SnakeCaseEncoder
 from graphql_requests.utils import to_snake_case
 
 
-class GraphQLBaseClient:
+class BaseClient:
+    """
+    Base GraphQL request client.
+    """
 
     __slots__ = [
         "_base_url",
@@ -13,18 +16,20 @@ class GraphQLBaseClient:
         "_cookies",
         "_json_serialize",
         "_snake_case_serializer",
+        "_auto_snake_case",
         "_timeout",
     ]
 
     def __init__(
         self,
-        base_url: str,
+        base_url: Union[str, None] = None,
         *,
         headers: Union[Dict[str, Any], None] = None,
         cookies: Union[Dict[str, Any], None] = None,
         json_serialize: Union[JSONEncoder, None] = json.dumps,
         snake_case_serializer: Union[SnakeCaseEncoder, None] = to_snake_case,
-        timeout: Union[float, None] = 15,  # seconds
+        auto_snake_case: Union[bool, None] = True,
+        timeout: Union[float, None] = None,  # seconds
     ) -> None:
         if headers is None:
             headers = dict()
@@ -37,6 +42,7 @@ class GraphQLBaseClient:
         self._cookies: Dict[str, Any] = cookies
         self._json_serialize: JSONEncoder = json_serialize
         self._snake_case_serializer: SnakeCaseEncoder = snake_case_serializer
+        self._auto_snake_case: bool = auto_snake_case
         self._timeout: float = timeout
 
     def _build_send_data(
@@ -71,6 +77,11 @@ class GraphQLBaseClient:
         return self._snake_case_serializer
 
     @property
-    def timeout(self) -> float:
+    def auto_snake_case(self) -> bool:
+        """Is response data will be automatically converted to `snake_case`."""
+        return self._auto_snake_case
+
+    @property
+    def timeout(self) -> Union[float, None]:
         """Timeout for the session."""
         return self._timeout

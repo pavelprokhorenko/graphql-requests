@@ -2,14 +2,14 @@ from typing import Any, Dict, Union
 
 import requests
 
-from graphql_requests.client.base import GraphQLBaseClient
+from graphql_requests.client.base import BaseClient
 from graphql_requests.errors import GraphQLError
 from graphql_requests.utils import dict_keys_to_snake_case_recursively
 
 
-class GraphQLClient(GraphQLBaseClient):
+class Client(BaseClient):
     """
-    Synchronous GraphQL client
+    Synchronous GraphQL request client.
     """
 
     def send(
@@ -21,7 +21,6 @@ class GraphQLClient(GraphQLBaseClient):
         variables: Union[str, Dict[str, Any]] = None,
         headers: Union[Dict[str, Any], None] = None,
         cookies: Union[Dict[str, Any], None] = None,
-        auto_snake_case: Union[bool, None] = True,
     ) -> Dict[str, Any]:
         """
         Send request to outer Graphql service and return received data
@@ -56,7 +55,7 @@ class GraphQLClient(GraphQLBaseClient):
         if errors:
             raise GraphQLError(errors=errors)
 
-        if auto_snake_case:
+        if self._auto_snake_case:
             return dict_keys_to_snake_case_recursively(
                 response_data["data"], snake_case_serializer=self._snake_case_serializer
             )
