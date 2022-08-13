@@ -13,6 +13,7 @@ class GraphQLBaseClient:
         "_cookies",
         "_json_serialize",
         "_snake_case_serializer",
+        "_auto_snake_case",
         "_timeout",
     ]
 
