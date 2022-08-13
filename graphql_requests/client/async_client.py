@@ -1,5 +1,6 @@
 import json
-from typing import Any, Dict, Union
+from types import TracebackType
+from typing import Any, Dict, Optional, Type, Union
 
 from aiohttp import ClientResponse, ClientSession, ClientTimeout
 
@@ -124,3 +125,27 @@ class GraphQLAsyncClient(GraphQLBaseClient):
             await self._session.close()
 
         self._session = None
+
+    def __enter__(self) -> None:
+        raise TypeError("Use `async with` instead")
+
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> None:
+        # __exit__ should exist in pair with __enter__ but never executed
+        pass
+
+    async def __aenter__(self) -> "GraphQLAsyncClient":
+        await self.connect()
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> None:
+        await self.close()
